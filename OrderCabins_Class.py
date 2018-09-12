@@ -49,6 +49,10 @@ class OrderCabins(object):
 			print("\n\t\tStay weeks has to be a number\n")
 			return False
 
+		if(int(stayWeeks) <= 0):
+			print("\n\t\tWeeks you want to stay should be great than 0")
+			return False
+
 		if(int(startWeek) + int(stayWeeks) - 1 not in self.availablePeriod):
 			print("\n\t\tWeeks you want to stay are not available")
 			print("\t\tAccording the week you want to start, stay weeks [1, %d] could be chosen\n" % (self.availablePeriod[-1] - int(startWeek) + 1))

@@ -8,7 +8,7 @@ class Cabin(object):
 	peakPrice = 0
 	offPeakPrice = 0
 
-	orders = []
+	orders = list()
 
 	"""docstring for Cabin"""
 	def __init__(self, no, name, capacity, peakPrice, offPeakPrice):
@@ -18,6 +18,7 @@ class Cabin(object):
 		self.capacity = capacity
 		self.peakPrice = peakPrice
 		self.offPeakPrice = offPeakPrice
+		self.orders = []
 
 	def IsAvailable(self, weekNo):
 		for order in self.orders:
@@ -36,17 +37,17 @@ class Cabin(object):
 
 		for loop in range(0, weekNumber):
 			order = Order(startWeek + loop, BookingCode)
-			if(self.IsAvailable(order)):
+			if(self.IsAvailable(order.weekNo)):
 				newOrders.append(order)
 			else:
-				raise Exception("Week %d in this order is not available" % loop)
-
+				print("\n\t\tWeek %d in this order has been taken, please choose others week\n" % (startWeek + loop))
+				return False
 
 		self.orders += newOrders
+		return True
 
 	def CalculateCost(self, startWeek, weekNumber, peakPeriod, cost):
 		for loop in range(startWeek, startWeek + weekNumber):
-			print("loop = [%d]" % loop)
 			if(loop not in peakPeriod):
 				cost[0] += self.offPeakPrice
 			else:
@@ -57,7 +58,12 @@ class Cabin(object):
 		else:
 			cost[1] = cost[0]
 
-		print("cost=[%.2lf], discountCost=[%.2lf]" % (cost[0], cost[1]))
+		print("\n\t\tYour cost is %.2lf " % cost[0], end='')
+
+		if(cost[0] != cost[1]):
+			print(", you got 10 percent discount and final cost is %.2lf\n" % cost[1])
+
+		print()
 
 	def ShowBase(self):
 		print("* %4s%20s%15s%20s%20s" % ("No.", "Cabin Name", "Capacity", "Price in Peak", "Price in Non-Peak" ))
@@ -102,6 +108,8 @@ class Cabin(object):
 			print("]")
 		else:
 			print("  => Ordered: None")
+
+		print("\n")
 
 	def ShowOrders(self):
 		for order in orders:
